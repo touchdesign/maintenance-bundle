@@ -1,0 +1,23 @@
+{
+  "name": "touchdesign/maintenance-bundle",
+  "authors": [
+    {
+      "name": "Christin Gruber"
+    }
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/touchdesign/maintenance-bundle",
+  "keywords": [],
+  "description": "Maintenance bundle for Symfony",
+  "require": {
+    "php": "^7.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "Touchdesign\\MaintenanceBundle\\": "src/"
+    },
+    "exclude-from-classmap": [
+      "/tests/"
+    ]
+  }
+}
