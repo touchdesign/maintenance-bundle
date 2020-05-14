@@ -9,4 +9,4 @@ services:
     class: Touchdesign\MaintenanceBundle\Utils\MaintenanceHandler
     autowire: true
     arguments:
-      $appDir: '%kernel.project_dir%'
+      $lockFile: '%kernel.project_dir%/var/maintenance.lock'

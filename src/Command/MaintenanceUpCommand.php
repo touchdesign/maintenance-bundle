@@ -18,7 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Touchdesign\MaintenanceBundle\Utils\MaintenanceHandler;
 
-class MaintenanceDownCommand extends Command
+class MaintenanceUpCommand extends Command
 {
     /**
      * @var MaintenanceHandler
@@ -35,8 +35,8 @@ class MaintenanceDownCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('touch:maintenance:down')
-            ->setDescription('Shutdown the whole app')
+            ->setName('touch:maintenance:up')
+            ->setDescription('Start the whole app')
             ->addOption('until', null, InputOption::VALUE_OPTIONAL, 'Shutdown until...')
         ;
     }
@@ -49,15 +49,15 @@ class MaintenanceDownCommand extends Command
             // ...
         }
 
-        if ($this->maintenanceHandler->isMaintenance()) {
-            $io->warning('Whole app is already in maintenance, nothing to do.');
+        if (!$this->maintenanceHandler->isMaintenance()) {
+            $io->warning('Whole app is already up and running, nothing to do.');
 
             return 1;
         }
 
-        $this->maintenanceHandler->down();
+        $this->maintenanceHandler->up();
 
-        $io->success('Whole app is successful down for maintenance.');
+        $io->success('Whole app is successful up from maintenance.');
 
         return 0;
     }

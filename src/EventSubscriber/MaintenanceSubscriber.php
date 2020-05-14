@@ -14,15 +14,28 @@ namespace Touchdesign\MaintenanceBundle\EventSubscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Touchdesign\MaintenanceBundle\Utils\MaintenanceHandler;
 
 class MaintenanceSubscriber implements EventSubscriberInterface
 {
-    public function onKernelRequest(RequestEvent $event)
+    /**
+     * @var MaintenanceHandler
+     */
+    private $maintenanceHandler;
+
+    public function __construct(MaintenanceHandler $maintenanceHandler)
     {
-        dump('Fire kernel.request event');
+        $this->maintenanceHandler = $maintenanceHandler;
     }
 
-    public static function getSubscribedEvents()
+    public function onKernelRequest(RequestEvent $event): void
+    {
+        if ($this->maintenanceHandler->isMaintenance()) {
+            $this->maintenanceHandler->handle();
+        }
+    }
+
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::REQUEST => ['onKernelRequest', 255],

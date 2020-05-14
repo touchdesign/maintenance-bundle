@@ -1,32 +1,45 @@
 <?php
 
+/*
+ * This file is a part of MaintenanceBundle a touchdesign project.
+ *
+ * (c) 2020 Christin Gruber
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Touchdesign\MaintenanceBundle\Utils;
 
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 class MaintenanceHandler
 {
     /**
-     * @var string Application dir.
+     * @var string LockFile
      */
-    private $appDir;
+    private $lockFile;
 
     /**
      * @var LoggerInterface
      */
     private $logger;
 
-    public function __construct(string $appDir, LoggerInterface $logger)
+    public function __construct(string $lockFile, LoggerInterface $logger, Filesystem $filesystem)
     {
-        $this->appDir = $appDir;
+        $this->lockFile = $lockFile;
         $this->logger = $logger;
+        $this->filesystem = $filesystem;
     }
 
     public function down(): self
     {
         $this->logger->info('Shutdown app for maintenance');
 
-        dump($this->appDir);
+        $this->filesystem->touch(
+            $this->lockFile
+        );
 
         return $this;
     }
@@ -35,19 +48,31 @@ class MaintenanceHandler
     {
         $this->logger->info('Up app from maintenance');
 
+        $this->filesystem->remove(
+            $this->lockFile
+        );
+
         return $this;
     }
 
-    public function isMaintenance(): self
+    public function isMaintenance(): bool
     {
         $this->logger->info('Query maintenance status');
 
-        return $this;
+        if ($this->filesystem->exists($this->lockFile)) {
+            return true;
+        }
+
+        return false;
     }
 
     public function handle(): self
     {
         $this->logger->info('Handle maintenance mode');
+
+        // ... Do some interesting things
+
+        dump('Maintenance is enabled');
 
         return $this;
     }
