@@ -16,9 +16,22 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Touchdesign\MaintenanceBundle\Utils\MaintenanceHandler;
 
 class MaintenanceDownCommand extends Command
 {
+    /**
+     * @var MaintenanceHandler
+     */
+    private $maintenanceHandler;
+
+    public function __construct(MaintenanceHandler $maintenanceHandler)
+    {
+        $this->maintenanceHandler = $maintenanceHandler;
+
+        parent::__construct();
+    }
+
     protected function configure()
     {
         $this
@@ -36,7 +49,7 @@ class MaintenanceDownCommand extends Command
             // ...
         }
 
-        // ...
+        $this->maintenanceHandler->down();
 
         $io->success('Whole app is successful down for maintenance.');
 

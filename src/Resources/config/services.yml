@@ -4,3 +4,9 @@ services:
     autowire: true
     autoconfigure: true
     exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+
+  Touchdesign\MaintenanceBundle\Utils\MaintenanceHandler:
+    class: Touchdesign\MaintenanceBundle\Utils\MaintenanceHandler
+    autowire: true
+    arguments:
+      $appDir: '%kernel.project_dir%'
