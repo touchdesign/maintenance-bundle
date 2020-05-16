@@ -13,6 +13,7 @@ namespace Touchdesign\MaintenanceBundle\Utils;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Touchdesign\MaintenanceBundle\Exception\MaintenanceException;
 
 class MaintenanceHandler
 {
@@ -66,14 +67,10 @@ class MaintenanceHandler
         return false;
     }
 
-    public function handle(): self
+    public function handle(): void
     {
         $this->logger->info('Handle maintenance mode');
 
-        // ... Do some interesting things
-
-        dump('Maintenance is enabled');
-
-        return $this;
+        throw new MaintenanceException();
     }
 }
